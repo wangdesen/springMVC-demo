@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:tx="http://www.springframework.org/schema/tx" 
+    xmlns:context="http://www.springframework.org/schema/context" 
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+	http://www.springframework.org/schema/tx 
+	http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+	http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-3.0.xsd
+    http://www.springframework.org/schema/aop 
+    http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+	http://www.springframework.org/schema/mvc
+    http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd"
+    >
+
+	<!-- 开启注解处理器 -->  
+	<context:annotation-config />
+	
+	<!-- 注册基于注解，会自动注册DefaultAnnotationHandlerMapping、AnnotationMethodHandlerAdapter -->
+	<mvc:annotation-driven />
+	
+	<!-- 自动扫描包，可以写多个 -->
+	<context:component-scan base-package="com.demo.springmvc"></context:component-scan>
+
+	<!-- 加载Properties配置文件，使用自定义的处理Properties -->
+	<bean id="propertyConfigurer" class="com.demo.springmvc.config.SpringPropertyPlaceholderConfigurer"> 
+	   <!--  <property name="locations"> 
+	        <list> 
+	            <value>classpath:config.properties</value> 
+			</list> 
+	    </property>  -->
+	</bean>
+
+	<!--配置base数据源 -->
+	<bean id="base" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="${db.driverClassName}" />
+		<property name="url" value="${db.url}" />
+		<property name="username" value="${db.username}" />
+		<property name="password" value="${db.password}" />
+	</bean>
+	<!--配置c3p0数据源 -->
+	<bean id="c3p0" class="com.mchange.v2.c3p0.ComboPooledDataSource" >
+         <property name="driverClass" value="${db.driverClassName}" />
+         <property name="jdbcUrl" value="${db.url}" />               
+         <property name="user" value="${db.username}" />
+         <property name="password" value="${db.password}" />
+         <property name="initialPoolSize" value="${c3p0.initialPoolSize}" />
+         <property name="minPoolSize" value="${c3p0.minPoolSize}" />
+         <property name="maxPoolSize" value="${c3p0.maxPoolSize}" />
+         <property name="maxIdleTime" value="${c3p0.maxIdleTime}" /><!--最大空闲的时间，单位是秒，无用的链接再过时后会被回收 -->
+         <property name="acquireIncrement" value="${c3p0.acquireIncrement}" /><!--在当前连接数耗尽的时候，一次获取的新的连接数-->
+         <property name="maxStatements" value="${c3p0.maxStatements}" />
+         <property name="idleConnectionTestPeriod" value="${c3p0.idleConnectionTestPeriod}" />
+         <property name="acquireRetryAttempts" value="${c3p0.acquireRetryAttempts}" />
+         <property name="breakAfterAcquireFailure" value="${c3p0.breakAfterAcquireFailure}" />
+         <!--如果设为true那么在取得连接的同时将校验连接的有效性。Default: false -->
+         <property name="testConnectionOnCheckout" value="${c3p0.testConnectionOnCheckout}" />
+	</bean>
+
+	<!--标准事务管理器,控制事务在数据源连接处理时 -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="${dataSource}" />
+	</bean>
+	<!-- 容器事务管理器,JtaTransactionManager,WeblogicJtaTransactionManager...
+	表示默认名称transactionManager，类：org.springframework.transaction.jta.JtaTransactionManager
+	跟具体容器相关，比如WebLogic容器为WeblogicJtaTransactionManager
+	简写方式：
+	<tx:jta-transaction-manager/>
+	-->
+	<!-- 配置事务特性，配置add，delete，update...开始的方法，事务传播特性为required -->
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<!-- the transactional semantics... -->
+		<tx:attributes>
+			<!-- all methods starting with 'get' are read-only -->
+			<tx:method name="*Query" read-only="true" />
+			<!-- other methods use the default transaction settings (see below) -->
+			<tx:method name="*Add" propagation="REQUIRED" />   
+	        <tx:method name="*Update" propagation="REQUIRED" />   
+	        <tx:method name="*Delete" propagation="REQUIRED" />
+		</tx:attributes>
+	</tx:advice>
+	
+	<!-- 配置那些类的方法进行事务管理，当前com.demo.springmvc.service包中的类和子包中所有方法需要 -->	
+	<aop:config>
+		<aop:pointcut expression="execution(public * com.demo.springmvc.service..*(..))"
+			id="trans" />
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="trans" />
+	</aop:config>
+	
+	<!-- 用注解来实现事务管理,添加@Transactional来标注事务注解 
+	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" />
+	-->
+	
+	<!--配置Mybatis -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="${dataSource}" />
+		<!-- 指定sqlMapConfig总配置文件，订制的environment在spring容器中不在生效 -->
+		<!-- <property name="configLocation" value="classpath:sqlMapConfig.xml"/> -->
+		<!--指定实体类映射文件，可以指定同时指定某一包以及子包下面的所有配置文件，mapperLocations和configLocation有一个即可，当需要为实体类指定别名时，可指定configLocation属性，再在mybatis总配置文件中采用mapper引入实体类映射文件 -->
+		<property name="mapperLocations" value="classpath*:com/demo/springmvc/dao/*.xml" />
+		<property name="typeAliasesPackage" value="com.demo.springmvc.model" />
+	</bean>
+
+	<!--Mybatis注册basePackage路径下的所有映射器MapperFactoryBean,用分号或逗号设置多个包路径 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.demo.springmvc.dao" />
+		<!--属性sqlSessionFactoryBeanName是可选的，当存在多个数据源时需指定sqlSessionFactory -->
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+	</bean>
+
+	<!-- 静态文件访问方式一：统一配置 -->
+	<mvc:default-servlet-handler />
+	<!-- 静态文件访问方式二：单独配置，自己写目标location -->
+	<!-- <mvc:resources mapping="/images/**" location="/images/" /> <mvc:resources mapping="/css/**" location="/css/" /> <mvc:resources mapping="/js/**" location="/js/" /> -->
+	<!-- 定义跳转的文件的前后缀 -->
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+
+	<!-- 手动注册DefaultAnnotationHandlerMapping，可以指定全局拦截器
+	<bean class=org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping>
+	    <property name=interceptors>
+	        <list>
+	            <bean class="com.demo.springmvc.interceptor.LogInterceptor"></bean>
+	        </list>
+	    </property>
+	</bean>-->
+	<!-- 全局拦截器：拦截所有的URL请求 
+	<mvc:interceptors>
+		<bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor" />
+		<bean class="com.demo.springmvc.interceptor.GlobalInterceptor" />
+	</mvc:interceptors>
+	-->
+	
+	<!-- 特定拦截器：拦截特有的URL请求 
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/*/**" />
+			<bean class="com.demo.springmvc.interceptor.ErrorInterceptor" />
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/*/**" />
+			<bean class="com.demo.springmvc.interceptor.LogInterceptor" />
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/admin/*" />
+			<bean class="com.demo.springmvc.interceptor.PermissionInterceptor" />
+		</mvc:interceptor>
+	</mvc:interceptors>
+	-->
+
+	<!-- 全局异常处理 -->
+	<bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		<property name="exceptionMappings">
+			<props>
+				<!-- 发生异常，会转到配置的error视图里面，这里为error.jsp -->
+				<prop key="com.demo.springmvc.exception.ControllerException">error</prop>
+				<prop key="java.lang.Exception">error</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- 文件上传 -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" >
+		<property name="maxUploadSize" value="104857600" />
+		<property name="maxInMemorySize" value="4096" />
+	</bean>
+	
+	<!-- 输出对象转JSON支持 -->
+	 <bean id="stringConverter" class="org.springframework.http.converter.StringHttpMessageConverter">
+		<property name="supportedMediaTypes">
+			<list>
+				<value>text/plain;charset=UTF-8</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="jsonConverter" class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter"></bean>
+	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+		<property name="messageConverters">
+			<list>
+				<ref bean="stringConverter" />
+				<ref bean="jsonConverter" />
+			</list>
+		</property>
+	</bean> 
+
+</beans>
