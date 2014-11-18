@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	${desc}
+	<p>${user}</p>
+	<p>${user!'user not exist'} </p>
+	<p>${user.age!'user has no age'}! </p>
+	<p>${user?if_exists}</p>
+	<p>${user?default('user not exist')}</p>
+</body>
+</html>
+
