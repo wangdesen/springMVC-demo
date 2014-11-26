@@ -24,7 +24,10 @@ public class FreemarkerController extends GenericController<User, Integer> {
 	public ModelAndView testfreemarkerview(HttpServletRequest request, HttpServletResponse response) {
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("desc", "this is a freemarker test");
-		User user = genericService.findById(1);
+		User user = new User();
+		user.setUserId(1);
+		user.setUsername("freemarker");
+		user.setEmail("xxx@gmail.com");
 		mav.addObject(user);
 		//返回视图为配置的前缀+名称+配置的后缀：/freemarker/test.html
 		mav.setViewName("test");

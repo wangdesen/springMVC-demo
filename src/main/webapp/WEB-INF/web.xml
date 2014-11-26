@@ -7,9 +7,23 @@
 		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
 	<!-- 静态文件访问：推荐在此设置，速度最快，使用tomcat容器默认servlet拦截静态文件，不需要Spring拦截后处理-->
+	<!-- Tomcat, Jetty, JBoss, and GlassFish 自带的默认Servlet的名字 : "default"
+		Google App Engine 自带的默认Servlet的名字 : "_ah_default"
+		Resin 自带的默认Servlet的名字 : "resin-file"
+		WebLogic 自带的默认Servlet的名字: "FileServlet"
+		WebSphere 自带的默认Servlet的名字 : "SimpleFileServlet"
+ 	-->
 	<servlet-mapping>
 		<servlet-name>default</servlet-name>
 		<url-pattern>*.jpg</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>default</servlet-name>
+		<url-pattern>*.png</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>default</servlet-name>
+		<url-pattern>*.gif</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>default</servlet-name>

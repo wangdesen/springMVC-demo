@@ -6,12 +6,11 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.demo.springmvc.service.IGenericService;
 
-public class GenericController<T, PK extends Serializable> {
+public class GenericController<T, PK extends Serializable> extends Context {
 
 	IGenericService<T, PK> genericService;
 
@@ -23,7 +22,7 @@ public class GenericController<T, PK extends Serializable> {
 		this.genericService = genericService;
 	}
 
-	@RequestMapping(value ="/{id}", method=RequestMethod.POST)
+	@RequestMapping(value ="/{id}")
 	@ResponseBody
 	public T findById(@PathVariable PK id) {
 		return genericService.findById(id);

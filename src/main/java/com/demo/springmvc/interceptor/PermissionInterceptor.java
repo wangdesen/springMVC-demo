@@ -3,12 +3,17 @@ package com.demo.springmvc.interceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.demo.springmvc.util.Log4jUtil;
 
-public class LoginInterceptor extends HandlerInterceptorAdapter {
+/**
+ * 实现HandlerInterceptor
+ * @author dreajay
+ *
+ */
+public class PermissionInterceptor  implements HandlerInterceptor {
 
 	/**
 	 * preHandle方法在执行控制器之前执行
@@ -17,7 +22,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 		Log4jUtil.debug(this, "LoginInterceptor preHandle...");
 		//return false;//将不会执行控制器
-		return super.preHandle(request, response, handler);
+		return true;
 	}
 
 	/**
@@ -25,10 +30,11 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 	 */
 	@Override
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-		Log4jUtil.debug(this, "LoginInterceptor postHandle...");
-		modelAndView.addObject("error", "please login first.");
-		modelAndView.setViewName("login");
-		super.postHandle(request, response, handler, modelAndView);
+		Log4jUtil.debug(this, "PermissionInterceptor postHandle...");
+		//处理自己的逻辑
+		if(Boolean.FALSE) {
+			modelAndView.setViewName("login");
+		}
 	}
 
 	/**
@@ -37,7 +43,6 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 	@Override
 	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
 		Log4jUtil.debug(this, "LoginInterceptor afterCompletion...");
-		super.afterCompletion(request, response, handler, ex);
 	}
 
 }

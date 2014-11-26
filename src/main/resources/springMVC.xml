@@ -139,7 +139,7 @@
 			</props>
 		</property>
 	</bean>
-	<!-- freemark页面解析器 -->
+	<!-- freemarker页面解析器 -->
 	<bean id="fmViewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
 		<property name="viewClass" value="org.springframework.web.servlet.view.freemarker.FreeMarkerView" />
 		<property name="contentType" value="text/html; charset=utf-8" />
@@ -166,43 +166,57 @@
 	        </list>
 	    </property>
 	</bean>-->
-	<!-- 全局拦截器：拦截所有的URL请求 
+	<!-- 全局拦截器：拦截所有的URL请求 -->
 	<mvc:interceptors>
 		<bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor" />
 		<bean class="com.demo.springmvc.interceptor.GlobalInterceptor" />
 	</mvc:interceptors>
-	-->
 	
-	<!-- 特定拦截器：拦截特有的URL请求 
+	
+	<!-- 特定拦截器：拦截特有的URL请求 -->
 	<mvc:interceptors>
 		<mvc:interceptor>
-			<mvc:mapping path="/*/**" />
-			<bean class="com.demo.springmvc.interceptor.ErrorInterceptor" />
+			<mvc:mapping path="/interceptor/test" />
+			<bean class="com.demo.springmvc.interceptor.LoginInterceptor" />
 		</mvc:interceptor>
+		<!--
 		<mvc:interceptor>
 			<mvc:mapping path="/*/**" />
-			<bean class="com.demo.springmvc.interceptor.LogInterceptor" />
-		</mvc:interceptor>
-		<mvc:interceptor>
-			<mvc:mapping path="/admin/*" />
 			<bean class="com.demo.springmvc.interceptor.PermissionInterceptor" />
 		</mvc:interceptor>
+		-->
 	</mvc:interceptors>
-	-->
 
 	<!-- 全局异常处理 -->
 	<bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+	    <!-- 默认异常返回视图，当找不到匹配的exceptionMapping时使用 -->
+	    <property name="defaultErrorView">
+			<value>error</value>
+		</property>
+		<!-- 默认异常返回码，当找不到匹配的exceptionMapping时使用 -->
+		<property name="defaultStatusCode">
+			<value>400</value>
+		</property>
+		<!-- 记录warn级别以上日志 -->
+		<property name="warnLogCategory">
+			<value>org.springframework.web.servlet.handler.SimpleMappingExceptionResolver</value>
+		</property>
 		<property name="exceptionMappings">
 			<props>
-				<!-- 发生异常，会转到配置的error视图里面，这里为error.jsp -->
-				<prop key="com.demo.springmvc.exception.ControllerException">error</prop>
+				<!-- 发生异常，根据视图解析器会转到配置的error视图里面，这里为error.jsp -->
+				<prop key="com.demo.springmvc.exception.GlobalException">error</prop>
 				<prop key="java.lang.Exception">error</prop>
+				<!-- SpringMVC在超出上传文件限制MaxUploadSizeExceededException异常，跳转到error_fileupload.jsp页面 -->  
+                <prop key="org.springframework.web.multipart.MaxUploadSizeExceededException">error</prop>  
 			</props>
 		</property>
 	</bean>
-
+	<!-- 自定义异常处理器 -->
+	<bean id="customExceptionResolver" class="com.demo.springmvc.exception.CustomExceptionResolver"/>
+	
 	<!-- 文件上传 -->
 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" >
+		<property name="defaultEncoding" value="UTF-8"/> 
 		<property name="maxUploadSize" value="104857600" />
 		<property name="maxInMemorySize" value="4096" />
 	</bean>

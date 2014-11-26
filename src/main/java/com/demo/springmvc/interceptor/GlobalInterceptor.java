@@ -8,15 +8,19 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.demo.springmvc.util.Log4jUtil;
 
-public class LoginInterceptor extends HandlerInterceptorAdapter {
+/**
+ * 全局拦截器
+ * @author dreajay
+ *
+ */
+public class GlobalInterceptor extends HandlerInterceptorAdapter {
 
 	/**
 	 * preHandle方法在执行控制器之前执行
 	 */
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-		Log4jUtil.debug(this, "LoginInterceptor preHandle...");
-		//return false;//将不会执行控制器
+		Log4jUtil.debug(this, "GlobalInterceptor preHandle...");
 		return super.preHandle(request, response, handler);
 	}
 
@@ -25,9 +29,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 	 */
 	@Override
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-		Log4jUtil.debug(this, "LoginInterceptor postHandle...");
-		modelAndView.addObject("error", "please login first.");
-		modelAndView.setViewName("login");
+		Log4jUtil.debug(this, "GlobalInterceptor postHandle...");
 		super.postHandle(request, response, handler, modelAndView);
 	}
 
@@ -36,7 +38,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 	 */
 	@Override
 	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
-		Log4jUtil.debug(this, "LoginInterceptor afterCompletion...");
+		Log4jUtil.debug(this, "GlobalInterceptor afterCompletion...");
 		super.afterCompletion(request, response, handler, ex);
 	}
 
