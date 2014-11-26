@@ -35,7 +35,7 @@ a:hover {
 			<li><a href="exception/custom" target="_blank">custom exception test</a></li>
 			<li><a href="freemarker/test" target="_blank">freemarker test</a></li>
 			<li><a href="fileUpload.jsp" target="_blank">fileUpload test</a></li>
-			<li><a href="validator.jsp" target="_blank">validator test</a></li>
+			<li><a href="validate/test" target="_blank">validate test</a></li>
 		</ul>
 	</div>
 

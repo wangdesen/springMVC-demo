@@ -1,12 +1,16 @@
 package com.demo.springmvc.model;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.hibernate.validator.constraints.NotEmpty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class User {
 	private int userId;
+	@NotEmpty(message="{username.not.empty}")
 	private String username;
+	@NotEmpty(message="{password.not.empty}")
 	private String password;
+	@NotEmpty(message="邮件不能为空")
 	private String email;
 	private String telephone;
 	private String sex;
