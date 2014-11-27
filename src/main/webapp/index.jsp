@@ -36,6 +36,9 @@ a:hover {
 			<li><a href="freemarker/test" target="_blank">freemarker test</a></li>
 			<li><a href="fileUpload.jsp" target="_blank">fileUpload test</a></li>
 			<li><a href="validate/test" target="_blank">validate test</a></li>
+			<li><a href="i18n/test" target="_blank">international test</a></li>
+			<li><a href="i18n/session?langType=zh" target="_blank">session international test</a></li>
+			<li><a href="i18n/cookie?langType=en" target="_blank">cookie international test</a></li>
 		</ul>
 	</div>
 

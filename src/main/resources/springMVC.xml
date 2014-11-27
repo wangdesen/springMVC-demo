@@ -168,6 +168,7 @@
 	</bean>-->
 	<!-- 全局拦截器：拦截所有的URL请求 -->
 	<mvc:interceptors>
+	    <!-- 链接式i18n国际化、网址拦截器 -->  
 		<bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor" />
 		<bean class="com.demo.springmvc.interceptor.GlobalInterceptor" />
 	</mvc:interceptors>
@@ -246,14 +247,25 @@
     <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
         <property name="providerClass"  value="org.hibernate.validator.HibernateValidator"/>
         <!--不设置则默认为classpath下的 ValidationMessages.properties -->
-        <property name="validationMessageSource" ref="validatemessageSource"/>
+        <property name="validationMessageSource" ref="messageSource"/>
     </bean>
     <bean id="conversion-service" class="org.springframework.format.support.FormattingConversionServiceFactoryBean" />
-    <bean id="validatemessageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">  
-        <property name="basename" value="classpath:validatemessages"/>  
+   
+    <!-- 国际化，bean id必须为messageSource -->
+    <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">  
+        <!-- <property name="basename" value="classpath:messages"/> -->  
+        <property name="basenames">  
+             <list>  
+             <value>classpath:messages</value><!-- 配置语言文件的地址的默认配置文件,在这里我是index.properties -->  
+            </list> 
+         </property>
         <property name="fileEncodings" value="utf-8"/>  
-        <property name="cacheSeconds" value="120"/>  
+        <property name="cacheSeconds" value="1"/>  
     </bean>
-    
 
+	<!-- Saves a locale change using a session-->    
+    <!-- <bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver" /> -->
+    <!-- Saves a locale change using a cookie--> 
+    <bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver" />
+    
 </beans>
