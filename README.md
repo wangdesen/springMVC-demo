@@ -3,6 +3,7 @@ springMVC-demo
 - redirect test
 - forward test
 - ajax test
+- resetful test
 - multiView test1
 - multiView test2
 - interceptor test
