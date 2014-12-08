@@ -27,6 +27,7 @@ a:hover {
 			<li><a href="redirect/test" target="_blank">redirect test</a></li>
 			<li><a href="forward/test" target="_blank">forward test</a></li>
 			<li><a href="ajax.jsp" target="_blank">ajax test</a></li>
+			<li><a href="resetful.jsp" target="_blank">resetful test</a></li>
 			<li><a href="multiView/test1" target="_blank">multiView test1</a></li>
 			<li><a href="multiView/test2" target="_blank">multiView test2</a></li>
 			<li><a href="interceptor/test" target="_blank">interceptor test</a></li>
