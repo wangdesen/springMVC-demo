@@ -20,7 +20,7 @@ import com.demo.springmvc.util.Log4jUtil;
  *
  */
 @Controller
-public class ResetfulController extends Context {
+public class RESTfulController extends Context {
 
 	/**
 	 * 查询单个用户
