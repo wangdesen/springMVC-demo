@@ -16,3 +16,4 @@ springMVC-demo
 - international test
 - session international test
 - cookie international test
+- classNameHandlerMapping test

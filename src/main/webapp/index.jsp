@@ -1,7 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%
+	String path = request.getContextPath();
+	String basePath = request.getScheme() + "://"
+			+ request.getServerName() + ":" + request.getServerPort()
+			+ path + "/";
+%>
 <html>
 <head>
+<base href="<%=basePath%>">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>springMVC demo</title>
 <style type="text/css">
@@ -40,6 +47,8 @@ a:hover {
 			<li><a href="i18n/test" target="_blank">international test</a></li>
 			<li><a href="i18n/session?langType=zh" target="_blank">session international test</a></li>
 			<li><a href="i18n/cookie?langType=en" target="_blank">cookie international test</a></li>
+			<li><a href="classNameHandlerMapping/classNameHandlerMappingTest" target="_blank">classNameHandlerMapping test</a></li>
+			
 		</ul>
 	</div>
 
