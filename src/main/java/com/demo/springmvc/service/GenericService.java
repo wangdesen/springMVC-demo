@@ -21,32 +21,26 @@ public class GenericService<T, PK extends Serializable> implements IGenericServi
 		this.genericDao = genericDao;
 	}
 	
-	@Override
 	public T findById(PK id) {
 		return genericDao.findById(id);
 	}
 
-	@Override
 	public List<T> findAll() {
 		return genericDao.findAll();
 	}
 
-	@Override
 	public int findAllCount() {
 		return genericDao.findAllCount();
 	}
 
-	@Override
 	public List<T> findByParameter(Map<String, Object> parameter) {
 		return genericDao.findByParameter(parameter);
 	}
 
-	@Override
 	public int findCountByParameter(Map<String, Object> parameter) {
 		return genericDao.findCountByParameter(parameter);
 	}
 
-	@Override
 	public boolean save(T entity) {
 		return genericDao.save(entity);
 	}
