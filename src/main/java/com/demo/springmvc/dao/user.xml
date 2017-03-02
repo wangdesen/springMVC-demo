@@ -26,8 +26,8 @@
 		where username like #{username} limit #{offset}, #{rows}
 	</select>
 
-	<insert id="save" parameterType="map" useGeneratedKeys="true" keyProperty="id">
-		insert into user(email,username, password,telephone,sex) values (#{email}, #{username}, #{password}, #{telephone}, #{sex})
+	<insert id="save" parameterType="map" useGeneratedKeys="true" keyProperty="userId">
+		insert into user(userId, email, username, password,telephone,sex) values (#{userId}, #{email}, #{username}, #{password}, #{telephone}, #{sex})
 	</insert>
 
 	<update id="update" parameterType="map">

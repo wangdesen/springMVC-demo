@@ -9,6 +9,9 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<springversion>3.2.11.RELEASE</springversion>
 		<junitversion>4.11</junitversion>
+		<org.log4j-version>1.2.12</org.log4j-version>
+        <org.slf4j-version>1.7.5</org.slf4j-version>
+        <org.slf4j-log4j12-version>1.7.12</org.slf4j-log4j12-version>
 	</properties>
 
 	<dependencies>
@@ -192,8 +195,28 @@
 			<artifactId>hibernate-validator</artifactId>
 			<version>4.3.1.Final</version>
 		</dependency>
-				
-
+		
+		<!-- 具体日志解决方案log4j -->
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>${org.log4j-version}</version>
+        </dependency>
+        
+        <!-- java简单日志门面接口，和commons-logging一样的作用 -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${org.slf4j-version}</version>
+        </dependency>
+        
+        <!-- slf4j-log4j -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>${org.slf4j-log4j12-version}</version>
+        </dependency>
+        
 	</dependencies>
 
 	

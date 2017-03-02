@@ -37,6 +37,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.function.Consumer;
 
 /**
  * General IO stream manipulation utilities.
@@ -1402,6 +1403,11 @@ class LineIterator implements Iterator {
             iterator.close();
         }
     }
+
+	public void forEachRemaining(Consumer arg0) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }
 

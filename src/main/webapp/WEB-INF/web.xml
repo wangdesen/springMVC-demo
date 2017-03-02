@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID"
-	version="2.5">
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns="http://java.sun.com/xml/ns/javaee" 
+    xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" 
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+        http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" 
+        id="WebApp_ID" version="2.5">
+        
 	<display-name>TimeNote</display-name>
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
 		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
+	
 	<!-- 静态文件访问：推荐在此设置，速度最快，使用tomcat容器默认servlet拦截静态文件，不需要Spring拦截后处理-->
 	<!-- Tomcat, Jetty, JBoss, and GlassFish 自带的默认Servlet的名字 : "default"
 		Google App Engine 自带的默认Servlet的名字 : "_ah_default"

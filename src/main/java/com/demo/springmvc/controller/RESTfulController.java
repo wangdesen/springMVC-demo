@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.demo.springmvc.model.User;
+import com.demo.springmvc.service.UserService;
 import com.demo.springmvc.util.Log4jUtil;
 
 /**
@@ -21,6 +23,9 @@ import com.demo.springmvc.util.Log4jUtil;
  */
 @Controller
 public class RESTfulController extends Context {
+	
+	@Autowired
+	private UserService userService;
 
 	/**
 	 * 查询单个用户
@@ -32,7 +37,8 @@ public class RESTfulController extends Context {
 	@ResponseBody
 	public User get(@PathVariable("userId") int userId) {
 		Log4jUtil.debug(this, "获取用户userId=" + userId);
-		User user = createUser(userId);
+		//User user = createUser(userId);
+		User user = userService.findById(userId);
 		return user;
 	}
 
