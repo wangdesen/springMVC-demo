@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.demo.springmvc.model.User;
+import com.demo.springmvc.service.BookService;
 import com.demo.springmvc.service.UserService;
 import com.demo.springmvc.util.Log4jUtil;
+import com.github.abel533.echarts.Option;
 
 /**
  * @author dreajay
@@ -26,6 +28,9 @@ public class RESTfulController extends Context {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private BookService bookService;
 
 	/**
 	 * 查询单个用户
@@ -121,6 +126,24 @@ public class RESTfulController extends Context {
 		dataMap.put("result", "删除用户成功");
 		return dataMap;
 	}
+	
+	@RequestMapping(value = "/book/findAll", method = RequestMethod.GET)
+	@ResponseBody  
+	public Map<String, Object> removecauses() throws Exception {  
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+	    //WebResult result = new WebResult();  
+	   /* try {  */
+	        Option option = bookService.selectRemoveCauses(); 
+	        dataMap.put("result", "ok");
+	        dataMap.put("data", option);
+	        
+	        /*result.isOK();  
+	        result.setData(option);  */
+	   /* } catch (BusinessException e) {  
+	        result.setException(e);  
+	    }  */
+	    return dataMap;  
+	}  
 
 	/**
 	 * 创建用户
